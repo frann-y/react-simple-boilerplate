@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
 
 //create Message bar component, copied from html
-class MessageBar extends Component {
+class Message extends Component {
     render (){
-
-
 
       return (
         <div>
@@ -22,4 +20,4 @@ class MessageBar extends Component {
 
 
 //export the charbar file
-export default MessageBar;
+export default Message;
