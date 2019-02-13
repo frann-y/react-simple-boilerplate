@@ -24,7 +24,9 @@ class ChatBar extends Component {
     };
 
     handleNameSubmit = event => {
+        console.log("b4 enter:")
       if (event.key === 'Enter') {
+        console.log("After enter")
         this.props.updateUsername(this.state.username);
         this.setState({ username: '' }); //clear the field
       }
@@ -38,7 +40,9 @@ class ChatBar extends Component {
     }
 
     handleMessageSubmit = event => {
+        // test console.log("b4 enter:")
       if (event.key === 'Enter') {
+        // test console.log("After enter")
         this.props.updateMessage(this.state.message);
         this.setState({ message: '' }); //clear the field
       }
@@ -60,7 +64,7 @@ class ChatBar extends Component {
         name="username"
         value={this.state.username}
         onChange= {this.handleNameChange} //wont allow if enterkey
-        onKeyUp= {this.handleNameChange}
+        onKeyUp= {this.handleNameSubmit}
         />
 
         <input 
@@ -69,7 +73,7 @@ class ChatBar extends Component {
         type= "text" 
         value={this.state.message}
         onChange= {this.handleMessageChange}
-        onKeyUp= {this.handleMessageChange}
+        onKeyUp= {this.handleMessageSubmit}
         />
       </footer>
     ) 

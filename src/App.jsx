@@ -16,15 +16,45 @@ class App extends Component {
         //state app has when first launched. 
         //messages won be equal to anything. so empty array
         //initialization : barebones, bare bare
-        currentUser: {},
-        messages: [{ id: uuid.v1(), username: "Bob", content: "Pickles"}],
+        currentUser: {
+          username: 'Janet',
+        },
+
+        messages: [{ 
+          id: uuid.v1(), 
+          username: "Bob", 
+          content: "Pickles"
+        }],
       };
   }
 
     //update the msg list
     //info gets passed up from chatbar
-    //call render and new state is passed to children
-        
+    //call render and new state is passed to children   
+    updateUsername = username => {
+      // this.sendUpdateUsername(this.state.currentUser, username); //finish
+      this.setState({
+        currentUser: { 
+          ...this.state.currentUser, 
+          username: username }
+      });
+    };
+
+    updateMessage = message => {
+      // this.sendUpdateMessage(this.state.messages.username, username);  
+     let newMsg = {
+       id: uuid(), 
+       username: this.state.currentUser.username, 
+       content: message
+      };
+
+      this.setState({
+        messages: [ 
+          ...this.state.messages, 
+          newMsg ],
+      });
+    };
+
 
   componentDidMount() {
     console.log("componentDidMount <App />");
@@ -48,13 +78,25 @@ class App extends Component {
 
         <main className="messages">
 
-          <MessageList messages = {this.state.messages} />
+          <MessageList 
+            messages = {this.state.messages} 
+            //currentUser={this.state.currentUser}
+            updateUsername= {this.updateUsername}
+            updateMessage= {this.updateMessage}
+          />
           
-          <Message />
+          <Message           
+            updateUsername= {this.updateUsername}
+            updateMessage= {this.updateMessage}
+          />
         
         </main>
 
-        <ChatBar currentUser={this.state.currentUser}/> {/*setting up prop*/}
+        <ChatBar 
+          currentUser={this.state.currentUser}
+          updateUsername= {this.updateUsername}
+          updateMessage= {this.updateMessage}
+        /> {/*setting up prop*/}
 
       </div>
     )
