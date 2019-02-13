@@ -11,8 +11,17 @@ class ChatBar extends Component {
     console.log(this.props.currentUser)//log user
     return (
       <footer className="chatbar"> {/*classname is a prop*/}
-        <input className="chatbar-username" placeholder="Your Name (Optional)" />
-        <input className="chatbar-message" placeholder="Type a message and hit ENTER" />
+        <form>
+        <input className="chatbar-username" 
+        placeholder="Your Name (Optional)" 
+        type="text"
+        />
+        </form>
+
+        <input className="chatbar-message" 
+        placeholder="Type a message and hit ENTER"
+        type= "text" 
+        />
       </footer>
     ) 
   }

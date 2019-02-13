@@ -1,43 +1,31 @@
 import React, {Component} from 'react';
+import Message from "./Message.jsx"
 
-//create Message bar component, copied from html
+
+
 class MessageList extends Component {
       //Needs access to messages
       //.map
 
     render (){
       console.log(this.props) //do something w later??
-      console.log(this.props.messages)//log messages
-
+      const msgs = this.props.messages;//log messages
       
       //map over messages =this.state.messages 
       // make some list, put in key props
+      const msgList = msgs.map(msg => (
+        <Message key={msg.id} username = {msg.username}content = {msg.content} />
+      ))
 
       return (
         <div className="message">
-            <span className="message-username">Anonymous1</span>
-            <span className="message-content">I won't be impressed with technology until I can download food.</span>
+            <ul> {msgList}
+            </ul>
         </div>
       ) 
     }
-};
+}
 
-
-///const MessageList = ({ messages }) => {
-//  const messageEl = messages.map(message => (
-//<
-//))
-//}
-
-// function MessageList(props) {
-//   const mess = props.messages;
-//   const messItems = mess.map((messnumber) =>
-//     <li>{mess}</li>
-//   );
-//   return (
-//     <ul>{messItems}</ul>
-//   );
-// }
 
 //export the charbar file
 export default MessageList;
