@@ -38,6 +38,8 @@ class App extends Component {
           ...this.state.currentUser, 
           username: username }
       });
+      //sends info to server
+      //this.myWebSocket.send(username); 
     };
 
     updateMessage = message => {
@@ -53,10 +55,29 @@ class App extends Component {
           ...this.state.messages, 
           newMsg ],
       });
+
+      this.myWebSocket.send(JSON.stringify(newMsg)); 
+
     };
 
 
   componentDidMount() {
+
+    //Coneccting my websocket server to App
+    this.myWebSocket = new WebSocket(
+      "ws://localhost:3001/socketserver", 
+      "protocolOne"
+      );
+
+      this.myWebSocket.onopen = event => {
+        //this.myWebSocket.send("Here's some text that the server is urgently awaiting!"); 
+      };
+
+      this.myWebSocket.onmessage = message => {
+        const serverMessage = JSON.parse(message.data);
+        console.log("Connected to server")
+    }
+
     console.log("componentDidMount <App />");
     setTimeout(() => {
       console.log("Simulating incoming message");
@@ -67,7 +88,8 @@ class App extends Component {
       // Calling setState will trigger a call to render() in App and all child components.
       this.setState({messages: messages})
     }, 3000);
-  }
+  
+}
 
   render() {
     return (

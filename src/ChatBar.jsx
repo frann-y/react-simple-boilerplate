@@ -28,7 +28,7 @@ class ChatBar extends Component {
       if (event.key === 'Enter') {
         console.log("After enter")
         this.props.updateUsername(this.state.username);
-        this.setState({ username: '' }); //clear the field
+        this.setState({ username: this.state.username }); //clear the field
       }
     };
 
