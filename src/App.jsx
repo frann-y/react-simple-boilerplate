@@ -21,10 +21,7 @@ class App extends Component {
         },
 
         messages: [],
-        //old messages hardcoded
-        // { id: uuid.v1(), 
-        //   username: "Bob", 
-        //   content: "Pickles"}],
+        clientSize: 0,
       };
   }
 
@@ -100,6 +97,18 @@ class App extends Component {
   
       this.myWebSocket.send(JSON.stringify(message));
     };
+
+    incomingUserInfo = (clientSize) => {
+      //update the value
+      //reassignment 
+      //num of client  = value serversendsback 
+      //in setstate
+      //this.setstate = 
+      let newUserInfo = clientSize;
+      //console.log('This is update:', update);
+      //console.log('This is NewUser: ', newUserInfo);
+      this.setState({clientSize})
+    }
   
   componentDidMount() {
 
@@ -114,6 +123,7 @@ class App extends Component {
     };
 
     this.myWebSocket.onmessage = event => {
+      console.log(event);
       const serverMessage = JSON.parse(event.data);
       console.log("Connected to server")
       switch (serverMessage.type) {
@@ -123,8 +133,11 @@ class App extends Component {
         case 'incomingNotification':
           this.addNewNotification(serverMessage);
           break; 
+        case 'incomingUserInfo':
+          this.incomingUserInfo(serverMessage.clientSize);
+        break;
         default:
-          console.log(`Unknown input: ${data.type}`);
+          console.log(`Unknown input: ${serverMessage.type}`);
       }
     };
 
@@ -146,7 +159,9 @@ class App extends Component {
       <div>
 
         {/*Importing Nav bar*/}
-        <NavBar />
+        <NavBar
+        clientSize= {this.state.clientSize}
+        />
 
         <main className="messages">
 

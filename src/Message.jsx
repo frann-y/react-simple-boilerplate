@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-//import Notify from './Notify.jsx';
 
 //create Message bar component, copied from html
 class Message extends Component {
