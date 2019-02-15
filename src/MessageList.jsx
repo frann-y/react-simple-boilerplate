@@ -17,13 +17,13 @@ class MessageList extends Component {
         <Message 
           key={msg.id} 
           username = {msg.username}
-          content = {msg.content} 
+          content = {msg.content}
+          type = {msg.type} 
         />
 
       //update the msg list
       //info gets passed up from chatbar
       //call render and new state is passed to children
-        
 
       ))
 

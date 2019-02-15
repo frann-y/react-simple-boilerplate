@@ -39,11 +39,21 @@ wss.broadcast = function broadcast(data) {
       case 'postMessage':
     //   //copying current object and giving i and send back
         const outgoingMessage = {
-          ...clientMessage,
-          id: uuidv4(), 
           type: 'incomingMessage',
+          content: clientMessage.content,
+          id: uuidv4(), 
+          username: clientMessage.username,
         };
         wss.broadcast(JSON.stringify(outgoingMessage));
+        break;
+      
+      case 'postNotification':
+        const outgoingNotification = {
+          type: 'incomingNotification',
+          content: clientMessage.content,
+          id: uuidv4(), 
+        };
+        wss.broadcast(JSON.stringify(outgoingNotification));
         break;
       default:
         console.log('Unknown Type of Message!');

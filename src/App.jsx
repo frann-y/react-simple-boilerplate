@@ -17,14 +17,14 @@ class App extends Component {
         //messages won be equal to anything. so empty array
         //initialization : barebones, bare bare
         currentUser: {
-          username: 'Janet',
+          username: 'Anon',
         },
 
-        messages: [
+        messages: [],
         //old messages hardcoded
-        { id: uuid.v1(), 
-          username: "Bob", 
-          content: "Pickles"}],
+        // { id: uuid.v1(), 
+        //   username: "Bob", 
+        //   content: "Pickles"}],
       };
   }
 
@@ -34,7 +34,7 @@ class App extends Component {
 
 
     updateUsername = username => {
-      // this.sendUpdateUsername(this.state.currentUser, username); //finish
+      this.sendUpdateUsername(this.state.currentUser.username, username); //finish
       this.setState({
         currentUser: { 
           ...this.state.currentUser, 
@@ -65,40 +65,68 @@ class App extends Component {
 
     //Adding Notification for ws
     addNewMessage = msg => {
-      const message = {
-        id: msg.id,
-        username: msg.username,
-        content: msg.content,     
-      };
-      let newMessages = this.state.messages.concat(message);
+      // const message = {
+      //   id: msg.id,
+      //   username: msg.username,
+      //   content: msg.content,
+
+      // };
+      let newMessages = this.state.messages.concat(msg);
 
       this.setState({messages: newMessages});
-      console.log(`adding ${JSON.stringify(message)}`);
+      console.log(`adding ${JSON.stringify(msg)}`);
     };
 
+
+    addNewNotification = notify => {
+      // const notificate = {
+      //   type: 'postNotification',
+      //   content: ``,
+      // };
+      let newNotification = this.state.messages.concat(notify);
+      console.log(notify)
+      
+      this.setState({messages: newNotification});
+    }
+
+
+    sendUpdateUsername = (oldUsername, newUsername) => {
+      const message = {
+        type: 'postNotification',
+        content: `${oldUsername ||
+          'Anon'} has changed its name to ${newUsername}`,
+
+      }
+  
+      this.myWebSocket.send(JSON.stringify(message));
+    };
+  
   componentDidMount() {
 
     //Coneccting my websocket server to App
     this.myWebSocket = new WebSocket(
       "ws://localhost:3001/socketserver", 
       "protocolOne"
-      );
+    );
 
-      this.myWebSocket.onopen = event => {
-        //this.myWebSocket.send("Here's some text that the server is urgently awaiting!"); 
-      };
+    this.myWebSocket.onopen = event => {
+      //this.myWebSocket.send("Here's some text that the server is urgently awaiting!"); 
+    };
 
-      this.myWebSocket.onmessage = message => {
-        const serverMessage = JSON.parse(message.data);
-        console.log("Connected to server")
-        switch (serverMessage.type) {
-          case 'incomingMessage':
-            this.addNewMessage(serverMessage);
-            break;
-          default:
-            console.log('Unknown message from server');
-        }
-      };
+    this.myWebSocket.onmessage = event => {
+      const serverMessage = JSON.parse(event.data);
+      console.log("Connected to server")
+      switch (serverMessage.type) {
+        case 'incomingMessage':
+          this.addNewMessage(serverMessage);
+          break;
+        case 'incomingNotification':
+          this.addNewNotification(serverMessage);
+          break; 
+        default:
+          console.log(`Unknown input: ${data.type}`);
+      }
+    };
 
     // console.log("componentDidMount <App />");
     // setTimeout(() => {
