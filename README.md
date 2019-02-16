@@ -21,8 +21,8 @@ open http://localhost:3000
 
 ### Screenshots
 
-!["Screenshot of chatty app"]()
-!["Screenshot of dual users on chatty app"]()
+!["Screenshot of chatty app"](https://github.com/frann-y/react-simple-boilerplate/blob/master/docs/appScreen.png?raw=true)
+!["Screenshot of dual users on chatty app"](https://github.com/frann-y/react-simple-boilerplate/blob/master/docs/muiltipleUsers.png?raw=true)
 
 ### Dependencies
 
