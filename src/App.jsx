@@ -6,30 +6,21 @@ import MessageList from './MessageList.jsx';
 import uuid from "uuid";
 
 class App extends Component {
-  //Needs acess to info on mesaages and current user
+
+//setting the state
+//Needs acess to info on mesaages and current user
   constructor(props) {
-    
-    //setting the state?
-    super(props); //cause using a class, 
-    //dont need when inside a function, just a class
+    super(props); 
       this.state = { 
-        //state app has when first launched. 
-        //messages won be equal to anything. so empty array
-        //initialization : barebones, bare bare
         currentUser: {
           username: 'Anon',
         },
-
         messages: [],
         clientSize: 0,
       };
   }
 
-    //update the msg list
-    //info gets passed up from chatbar
-    //call render and new state is passed to children   
-
-
+//Update UserName
     updateUsername = username => {
       this.sendUpdateUsername(this.state.currentUser.username, username); //finish
       this.setState({
@@ -37,95 +28,57 @@ class App extends Component {
           ...this.state.currentUser, 
           username: username }
       });
-      //sends info to server
-      //this.myWebSocket.send(username); 
     };
 
+//AddingMessage
     updateMessage = message => {
-      // this.sendUpdateMessage(this.state.messages.username, username);  
      let newMsg = {
        id: uuid(), 
        username: this.state.currentUser.username, 
        content: message,
        type: 'postMessage',
       };
-
-      // this.setState({
-      //   messages: [ 
-      //     ...this.state.messages, 
-      //     newMsg ],
-      // });
-
       this.myWebSocket.send(JSON.stringify(newMsg)); 
-
     };
 
-    //Adding Notification for ws
+//Adding message || Notification for ws
     addNewMessage = msg => {
-      // const message = {
-      //   id: msg.id,
-      //   username: msg.username,
-      //   content: msg.content,
-
-      // };
       let newMessages = this.state.messages.concat(msg);
-
       this.setState({messages: newMessages});
-      console.log(`adding ${JSON.stringify(msg)}`);
     };
 
 
     addNewNotification = notify => {
-      // const notificate = {
-      //   type: 'postNotification',
-      //   content: ``,
-      // };
       let newNotification = this.state.messages.concat(notify);
-      console.log(notify)
-      
       this.setState({messages: newNotification});
     }
 
-
+//Update/Notify of user name change
     sendUpdateUsername = (oldUsername, newUsername) => {
       const message = {
         type: 'postNotification',
         content: `${oldUsername ||
           'Anon'} has changed its name to ${newUsername}`,
-
       }
-  
       this.myWebSocket.send(JSON.stringify(message));
     };
 
+//Update the value of Num of Online Users
     incomingUserInfo = (clientSize) => {
-      //update the value
-      //reassignment 
-      //num of client  = value serversendsback 
-      //in setstate
-      //this.setstate = 
-      let newUserInfo = clientSize;
-      //console.log('This is update:', update);
-      //console.log('This is NewUser: ', newUserInfo);
       this.setState({clientSize})
     }
   
   componentDidMount() {
-
-    //Coneccting my websocket server to App
+    //Connecting my websocket server to App
     this.myWebSocket = new WebSocket(
       "ws://localhost:3001/socketserver", 
       "protocolOne"
     );
 
-    this.myWebSocket.onopen = event => {
-      //this.myWebSocket.send("Here's some text that the server is urgently awaiting!"); 
-    };
-
+    //Switch statement: on messagetype, which notification to send. 
     this.myWebSocket.onmessage = event => {
-      console.log(event);
+
       const serverMessage = JSON.parse(event.data);
-      console.log("Connected to server")
       switch (serverMessage.type) {
         case 'incomingMessage':
           this.addNewMessage(serverMessage);
@@ -140,27 +93,15 @@ class App extends Component {
           console.log(`Unknown input: ${serverMessage.type}`);
       }
     };
-
-    // console.log("componentDidMount <App />");
-    // setTimeout(() => {
-    //   console.log("Simulating incoming message");
-    //   // Add a new message to the list of messages in the data store
-    //   const newMessage = {id: 3, username: "Michelle", content: "Hello there!"};
-    //   const messages = this.state.messages.concat(newMessage)
-    //   // Update the state of the app component.
-    //   // Calling setState will trigger a call to render() in App and all child components.
-    //   this.setState({messages: messages})
-    // }, 3000);
-  
 }
-
+//call render and new state is passed to children  
   render() {
     return (
       <div>
 
-        {/*Importing Nav bar*/}
+        {/*setting up properties*/}
         <NavBar
-        clientSize= {this.state.clientSize}
+          clientSize= {this.state.clientSize}
         />
 
         <main className="messages">
@@ -183,7 +124,7 @@ class App extends Component {
           currentUser={this.state.currentUser}
           updateUsername= {this.updateUsername}
           updateMessage= {this.updateMessage}
-        /> {/*setting up prop*/}
+        /> 
 
       </div>
     )

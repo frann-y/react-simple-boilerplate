@@ -1,22 +1,20 @@
 //must be imported on every jsx file
 import React, {Component} from 'react';
-//w/out curly braces, uses default
 
 
-//create chatbar component, copied from html
 class ChatBar extends Component {
   //needs access to current user
   constructor(props) {
     super(props);
     this.state = {
       username: '',
-      message: '', // ****content: this.props.content,or message? //set to strings
+      message: '', 
     }
   }
 
-    //  updates the input - typing somthing
+//  updates the input on Events
 
-    //Handle UserName Change and Submit
+//Handle UserName Change and Submit
     handleNameChange = event => {
       this.setState({ 
         username: event.target.value,
@@ -24,15 +22,13 @@ class ChatBar extends Component {
     };
 
     handleNameSubmit = event => {
-        console.log("b4 enter:")
       if (event.key === 'Enter') {
-        console.log("After enter")
         this.props.updateUsername(this.state.username);
         this.setState({ username: this.state.username }); //clear the field
       }
     };
 
-    //Handle Message Change and Submit
+//Handle Message Change and Submit
     handleMessageChange = event => {
       this.setState({
         message: event.target.value,
@@ -40,9 +36,7 @@ class ChatBar extends Component {
     }
 
     handleMessageSubmit = event => {
-        // test console.log("b4 enter:")
       if (event.key === 'Enter') {
-        // test console.log("After enter")
         this.props.updateMessage(this.state.message);
         this.setState({ message: '' }); //clear the field
       }
@@ -51,11 +45,10 @@ class ChatBar extends Component {
     
   
   render () {
-    //console.log(this.props) //do something w later??
-    //console.log(this.props.currentUser)//log user
-    
+
+//Render and return the chatBar (like a form)
     return (
-      <footer className="chatbar"> {/*classname is a prop*/}
+      <footer className="chatbar">
         
         <input 
         className="chatbar-username" 
@@ -63,7 +56,7 @@ class ChatBar extends Component {
         type="text"
         name="username"
         value={this.state.username}
-        onChange= {this.handleNameChange} //wont allow if enterkey
+        onChange= {this.handleNameChange}
         onKeyUp= {this.handleNameSubmit}
         />
 
@@ -80,6 +73,4 @@ class ChatBar extends Component {
   }
 }
 
-
-//export the chatbar file
 export default ChatBar;

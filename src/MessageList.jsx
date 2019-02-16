@@ -1,18 +1,13 @@
 import React, {Component} from 'react';
 import Message from "./Message.jsx"
 
-
-
 class MessageList extends Component {
-      //Needs access to messages
-      //.map
-
     render (){
-      //console.log(this.props) //do something w later??
-      const msgs = this.props.messages;//log messages
+
+      //grap message properties
+      const msgs = this.props.messages;
       
-      //map over messages =this.state.messages 
-      // make some list, put in key props
+      //loop over messages w .map 
       const msgList = msgs.map(msg => (
         <Message 
           key={msg.id} 
@@ -20,13 +15,9 @@ class MessageList extends Component {
           content = {msg.content}
           type = {msg.type} 
         />
-
-      //update the msg list
-      //info gets passed up from chatbar
-      //call render and new state is passed to children
-
       ))
 
+      //return the message list to be displayed
       return (
         <div className="message">
             <ul> 
@@ -36,7 +27,6 @@ class MessageList extends Component {
       ) 
     }
 }
-
 
 //export the charbar file
 export default MessageList;
